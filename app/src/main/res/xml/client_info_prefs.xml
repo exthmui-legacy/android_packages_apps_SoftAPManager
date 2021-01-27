@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="name"
+        android:title="@string/title_name" />
+
+    <Preference
+        android:key="mac_address"
+        android:title="@string/title_mac_address" />
+
+    <Preference
+        android:key="ip_address"
+        android:title="@string/title_ip_address" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="blocked"
+        android:title="@string/title_blocked" />
+
+</PreferenceScreen>

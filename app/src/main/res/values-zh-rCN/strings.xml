@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SoftAPManager</string>
+    <string name="title_activity_client_info">客户端信息</string>
+    <string name="title_activity_client_list">客户端列表</string>
+    <string name="title_blocked_clients">已阻止</string>
+    <string name="title_connected_clients">已连接</string>
+    <string name="title_name">名称</string>
+    <string name="title_mac_address">MAC 地址</string>
+    <string name="title_ip_address">IP 地址</string>
+    <string name="title_blocked">阻止连接</string>
+</resources>

@@ -1,0 +1,18 @@
+android_app {
+    name: "SoftAPManager",
+
+    resource_dirs: ["res"],
+
+    srcs: ["java/**/*.java"],
+
+    static_libs: [
+        "androidx.preference_preference",
+        "com.google.android.material_material",
+    ],
+
+    platform_apis: true,
+    product_specific: true,
+    privileged: true,
+    certificate: "platform",
+
+}

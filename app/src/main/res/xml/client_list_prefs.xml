@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/title_connected_clients"
+        android:key="connected_clients" >
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_blocked_clients"
+        android:key="blocked_clients" >
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.exthmui.softap"
+    android:sharedUserId="android.uid.system">
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.DeviceDefault.Settings">
+        <activity
+            android:name=".ClientListActivity"
+            android:label="@string/title_activity_client_list">
+
+        </activity>
+        <activity
+            android:name=".ClientInfoActivity"
+            android:label="@string/title_activity_client_info" />
+
+        <service
+            android:name=".SoftApManageService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receivers.BootCompletedReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SoftAPManager</string>
+    <string name="title_activity_client_info">Client Info</string>
+    <string name="title_activity_client_list">Client List</string>
+    <string name="title_blocked_clients">Blocked Clients</string>
+    <string name="title_connected_clients">Connected Clients</string>
+    <string name="title_name">Name</string>
+    <string name="title_mac_address">MAC Address</string>
+    <string name="title_ip_address">IP Address</string>
+    <string name="title_blocked">Blocked</string>
+</resources>
