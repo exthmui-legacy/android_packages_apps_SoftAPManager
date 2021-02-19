@@ -13,6 +13,10 @@
         android:key="ip_address"
         android:title="@string/title_ip_address" />
 
+    <Preference
+        android:key="manufacturer"
+        android:title="@string/title_manufacturer" />
+
     <SwitchPreference
         android:defaultValue="false"
         android:key="blocked"

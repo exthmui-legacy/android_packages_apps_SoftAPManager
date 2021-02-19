@@ -8,6 +8,7 @@ public class ClientInfo implements Cloneable {
     private final String mMACAddress;
     private boolean mBlocked;
     private boolean mConnected;
+    private String mManufacturer;
     private final ArrayList<String> mIPAddressList = new ArrayList<>();
 
     public ClientInfo(String mac) {
@@ -50,6 +51,14 @@ public class ClientInfo implements Cloneable {
     public String[] getIPAddressArray() {
         Object[] objects = mIPAddressList.toArray();
         return Arrays.copyOf(objects, objects.length, String[].class);
+    }
+
+    public void setManufacturer(String manufacturer) {
+        mManufacturer = manufacturer;
+    }
+
+    public String getManufacturer() {
+        return mManufacturer;
     }
 
     @Override

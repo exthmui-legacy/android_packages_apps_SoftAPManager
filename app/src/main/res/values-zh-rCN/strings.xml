@@ -9,4 +9,5 @@
     <string name="title_mac_address">MAC 地址</string>
     <string name="title_ip_address">IP 地址</string>
     <string name="title_blocked">阻止连接</string>
+    <string name="title_manufacturer">制造商</string>
 </resources>

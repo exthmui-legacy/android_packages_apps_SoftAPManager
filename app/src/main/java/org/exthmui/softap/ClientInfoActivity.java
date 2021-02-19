@@ -134,6 +134,7 @@ public class ClientInfoActivity extends FragmentActivity implements SoftApManage
         private Preference prefName;
         private Preference prefMAC;
         private Preference prefIP;
+        private Preference prefManufacturer;
         private SwitchPreference prefBlocked;
 
         @Override
@@ -142,6 +143,7 @@ public class ClientInfoActivity extends FragmentActivity implements SoftApManage
             prefName = findPreference("name");
             prefIP = findPreference("ip_address");
             prefMAC = findPreference("mac_address");
+            prefManufacturer = findPreference("manufacturer");
             prefBlocked = findPreference("blocked");
             prefBlocked.setOnPreferenceChangeListener(this);
         }
@@ -155,6 +157,7 @@ public class ClientInfoActivity extends FragmentActivity implements SoftApManage
             prefName.setSummary(info.getName());
             prefMAC.setSummary(info.getMACAddress());
             prefIP.setSummary(String.join("\n", info.getIPAddressArray()));
+            prefManufacturer.setSummary(info.getManufacturer());
             prefBlocked.setChecked(info.isBlocked());
         }
 

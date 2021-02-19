@@ -18,6 +18,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import org.exthmui.softap.model.ClientInfo;
+import org.exthmui.softap.oui.MACData;
+import org.exthmui.softap.oui.MACDataHelper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -129,6 +131,11 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
         if (mBlockedMACList.isEmpty()) {
             updateBlockedMACList();
         }
+
+        if (!MACDataHelper.isInitialized()) {
+            MACDataHelper.init(this);
+        }
+
         registerReceiver(mApStatusReceiver, new IntentFilter(WifiManager.WIFI_AP_STATE_CHANGED_ACTION));
 
         return ret;
@@ -225,6 +232,10 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
                     info = clientInfoHashMap.get(macAddress);
                 } else {
                     info = new ClientInfo(macAddress);
+                    MACData macData = MACDataHelper.findMACData(macAddress);
+                    if (macData != null) {
+                        info.setManufacturer(macData.toString());
+                    }
                     clientInfoHashMap.put(macAddress, info);
                 }
                 if (info == null) continue;
@@ -239,6 +250,10 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
                 clientInfoHashMap.get(blockedMAC).setBlocked(true);
             } else {
                 ClientInfo info = new ClientInfo(blockedMAC);
+                MACData macData = MACDataHelper.findMACData(blockedMAC);
+                if (macData != null) {
+                    info.setManufacturer(macData.toString());
+                }
                 info.setConnected(false);
                 info.setBlocked(true);
                 clientInfoHashMap.put(blockedMAC, info);
