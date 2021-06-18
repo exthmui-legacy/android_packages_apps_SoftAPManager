@@ -274,11 +274,11 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
     }
 
     private boolean isValidMACAddress(String mac) {
-        return mac != null && mac.matches("..:..:..:..:..:..");
+        return mac != null && mac.matches("([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}");
     }
 
     private boolean isIPV4Address(String ip) {
-        return ip != null && ip.matches("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}");
+        return ip != null && ip.matches("((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))");
     }
 
     private boolean isReachable(String ip) {
