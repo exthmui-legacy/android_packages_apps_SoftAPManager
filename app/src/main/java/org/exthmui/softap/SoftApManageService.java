@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiClient;
 import android.os.Binder;
 import android.os.Handler;
+import android.os.HandlerExecutor;
 import android.os.IBinder;
 import android.os.INetworkManagementService;
 import android.os.Message;
@@ -30,6 +32,7 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 import static android.net.wifi.WifiManager.EXTRA_WIFI_AP_INTERFACE_NAME;
@@ -69,7 +72,7 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
             if (WifiManager.WIFI_AP_STATE_CHANGED_ACTION.equals(intent.getAction())) {
                 mInterfaceName = intent.getStringExtra(EXTRA_WIFI_AP_INTERFACE_NAME);
                 unregisterReceiver(this);
-                mWifiManager.registerSoftApCallback(SoftApManageService.this, mHandler);
+                mWifiManager.registerSoftApCallback(new HandlerExecutor(mHandler),SoftApManageService.this);
             }
         }
     };
@@ -321,12 +324,7 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
     }
 
     @Override
-    public void onStateChanged(int state, int failureReason) {
-        mHandler.sendEmptyMessage(MSG_UPDATE_CLIENT_LIST);
-    }
-
-    @Override
-    public void onNumClientsChanged(int numClients) {
+    public void onConnectedClientsChanged(List<WifiClient> clients) {
         mHandler.sendEmptyMessageDelayed(MSG_UPDATE_CLIENT_LIST, 1000);
     }
 
