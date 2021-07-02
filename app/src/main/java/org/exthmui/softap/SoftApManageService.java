@@ -304,7 +304,7 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
             InetAddress inetAddress = InetAddress.getByAddress(ipBuffer);
             client.setName(inetAddress.getHostName());
         } catch (UnknownHostException e) {
-            // do nothing
+            client.setName(ips[0]);
         }
     }
 
