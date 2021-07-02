@@ -80,12 +80,12 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
     public SoftApManageService() {
     }
 
-    private Thread createClientUpdateThread() {
+    private Thread createClientUpdateThread(final List<WifiClient> clients) {
         return new Thread() {
             @Override
             public void run() {
                 try {
-                    IUpdateClientList();
+                    IUpdateClientList(clients);
                     sendStatusChangedMessage(STATUS_NORMAL);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -114,12 +114,11 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
                         if (mClientUpdateThread != null &&
                                 mClientUpdateThread.getState() != Thread.State.NEW &&
                                 mClientUpdateThread.getState() != Thread.State.TERMINATED) {
-                            mHandler.sendEmptyMessageDelayed(MSG_UPDATE_CLIENT_LIST, 1000);
+                            mHandler.removeMessages(MSG_UPDATE_CLIENT_LIST);
+                            mHandler.sendMessageDelayed(msg, 1000);
                             return;
                         }
-                        if (mClientUpdateThread == null || mClientUpdateThread.getState() != Thread.State.NEW) {
-                            mClientUpdateThread = createClientUpdateThread();
-                        }
+                        mClientUpdateThread = createClientUpdateThread((List<WifiClient>) msg.obj);
                         mClientUpdateThread.start();
                     }
                 }
@@ -216,12 +215,22 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
         return false;
     }
 
-    private void IUpdateClientList() {
+    private void IUpdateClientList(List<WifiClient> clients) {
 
         HashMap<String, ClientInfo> clientInfoHashMap = new HashMap<>();
 
         sendStatusChangedMessage(STATUS_CLIENTS_REFRESHING);
         // 取得当前连接的设备
+        for (WifiClient client : clients) {
+            String macAddress = client.getMacAddress().toString();
+            ClientInfo info = new ClientInfo(macAddress);
+            MACData macData = MACDataHelper.findMACData(macAddress);
+            if (macData != null) {
+                info.setManufacturer(macData.toString());
+            }
+            clientInfoHashMap.put(macAddress, info);
+        }
+        // MAC-IP 匹配
         String res = execCommand(String.format(IP_NEIGHBOR_COMMAND_FORMAT, mInterfaceName));
         if (!TextUtils.isEmpty(res)) {
             String[] lines = res.split("\n");
@@ -230,20 +239,10 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
                 String ipAddress = values[COLUMN_IP_ADDRESS];
                 String macAddress = values[COLUMN_MAC_ADDRESS];
                 if (!isValidMACAddress(macAddress)) continue;
-                ClientInfo info;
                 if (clientInfoHashMap.containsKey(macAddress)) {
-                    info = clientInfoHashMap.get(macAddress);
-                } else {
-                    info = new ClientInfo(macAddress);
-                    MACData macData = MACDataHelper.findMACData(macAddress);
-                    if (macData != null) {
-                        info.setManufacturer(macData.toString());
-                    }
-                    clientInfoHashMap.put(macAddress, info);
+                    ClientInfo info = clientInfoHashMap.get(macAddress);
+                    info.addIPAddress(ipAddress);
                 }
-                if (info == null) continue;
-                info.addIPAddress(ipAddress);
-                info.setConnected(info.isConnected() || isReachable(ipAddress));
             }
         }
 
@@ -257,7 +256,6 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
                 if (macData != null) {
                     info.setManufacturer(macData.toString());
                 }
-                info.setConnected(false);
                 info.setBlocked(true);
                 clientInfoHashMap.put(blockedMAC, info);
             }
@@ -279,14 +277,6 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
 
     private boolean isIPV4Address(String ip) {
         return ip != null && ip.matches("((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))");
-    }
-
-    private boolean isReachable(String ip) {
-        try {
-            return InetAddress.getByName(ip).isReachable(1500);
-        } catch (IOException e) {
-            return false;
-        }
     }
 
     private void sendStatusChangedMessage(int what) {
@@ -325,7 +315,10 @@ public class SoftApManageService extends Service implements WifiManager.SoftApCa
 
     @Override
     public void onConnectedClientsChanged(List<WifiClient> clients) {
-        mHandler.sendEmptyMessageDelayed(MSG_UPDATE_CLIENT_LIST, 1000);
+        Message msg = mHandler.obtainMessage();
+        msg.what = MSG_UPDATE_CLIENT_LIST;
+        msg.obj = clients;
+        mHandler.sendMessage(msg);
     }
 
     private static String execCommand(String cmd) {

@@ -125,7 +125,7 @@ public class ClientListActivity extends FragmentActivity implements SoftApManage
                         continue;
                     }
                     mBlockedClients.addPreference(makeClientPreference(info));
-                } else if (info.isConnected()) {
+                } else {
                     removeConnectedPrefList.remove(info.getMACAddress());
                     if (mConnectedClients.findPreference(info.getMACAddress()) != null) {
                         continue;
