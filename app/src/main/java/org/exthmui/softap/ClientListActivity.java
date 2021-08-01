@@ -101,6 +101,7 @@ public class ClientListActivity extends FragmentActivity implements SoftApManage
             setPreferencesFromResource(R.xml.client_list_prefs, rootKey);
             mConnectedClients = findPreference("connected_clients");
             mBlockedClients = findPreference("blocked_clients");
+            updateCategory();
         }
 
         @Override
@@ -140,6 +141,7 @@ public class ClientListActivity extends FragmentActivity implements SoftApManage
             for (String key : removeConnectedPrefList) {
                 mConnectedClients.removePreferenceRecursively(key);
             }
+            updateCategory();
         }
 
         private void addPrefToList(ArrayList<String> list, PreferenceCategory preferenceCategory) {
@@ -156,6 +158,24 @@ public class ClientListActivity extends FragmentActivity implements SoftApManage
             preference.setSummary(clientInfo.getMACAddress());
             preference.setOnPreferenceClickListener(this);
             return preference;
+        }
+
+        private void updateCategory() {
+            if (mConnectedClients != null) {
+                if (mConnectedClients.getPreferenceCount() == 0) {
+                    mConnectedClients.setVisible(false);
+                } else {
+                    mConnectedClients.setVisible(true);
+                }
+            }
+
+            if (mBlockedClients != null) {
+                if (mBlockedClients.getPreferenceCount() == 0) {
+                    mBlockedClients.setVisible(false);
+                } else {
+                    mBlockedClients.setVisible(true);
+                }
+            }
         }
     }
 
