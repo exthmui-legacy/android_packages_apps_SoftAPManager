@@ -16,6 +16,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.android.settingslib.widget.FooterPreference;
 import org.exthmui.softap.model.ClientInfo;
 
 import java.util.ArrayList;
@@ -95,12 +96,14 @@ public class ClientListActivity extends FragmentActivity implements SoftApManage
 
         private PreferenceCategory mConnectedClients;
         private PreferenceCategory mBlockedClients;
+        private FooterPreference mFooter;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.client_list_prefs, rootKey);
             mConnectedClients = findPreference("connected_clients");
             mBlockedClients = findPreference("blocked_clients");
+            mFooter = findPreference("footer");
             updateCategory();
         }
 
@@ -161,20 +164,17 @@ public class ClientListActivity extends FragmentActivity implements SoftApManage
         }
 
         private void updateCategory() {
+            boolean showConnected = mConnectedClients.getPreferenceCount() > 0;
+            boolean showBlocked = mBlockedClients.getPreferenceCount() > 0;
+
+            mFooter.setVisible(!showConnected && !showBlocked);
+
             if (mConnectedClients != null) {
-                if (mConnectedClients.getPreferenceCount() == 0) {
-                    mConnectedClients.setVisible(false);
-                } else {
-                    mConnectedClients.setVisible(true);
-                }
+                mConnectedClients.setVisible(showConnected);
             }
 
             if (mBlockedClients != null) {
-                if (mBlockedClients.getPreferenceCount() == 0) {
-                    mBlockedClients.setVisible(false);
-                } else {
-                    mBlockedClients.setVisible(true);
-                }
+                mBlockedClients.setVisible(showBlocked);
             }
         }
     }

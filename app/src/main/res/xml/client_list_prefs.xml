@@ -13,4 +13,8 @@
 
     </PreferenceCategory>
 
+    <com.android.settingslib.widget.FooterPreference
+            android:key="footer"
+            android:title="@string/footer_text"
+            android:selectable="false" />
 </PreferenceScreen>

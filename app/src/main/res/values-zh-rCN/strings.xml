@@ -10,4 +10,8 @@
     <string name="title_ip_address">IP 地址</string>
     <string name="title_blocked">阻止连接</string>
     <string name="title_manufacturer">制造商</string>
+
+    <!-- Footer  -->
+    <string name="footer_text">当前没有可用的客户端。 如果可用，将在此处列出已连接和已阻止的客户端。</string>
+
 </resources>
