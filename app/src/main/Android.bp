@@ -5,6 +5,9 @@ android_app {
 
     srcs: ["java/**/*.java"],
 
+    // Include SettingsLib and it's dependencies
+    defaults: ["SettingsLibDefaults"],
+
     static_libs: [
         "androidx.preference_preference",
         "com.google.android.material_material",
