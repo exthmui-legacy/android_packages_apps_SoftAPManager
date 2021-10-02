@@ -9,7 +9,9 @@ android_app {
         "androidx.preference_preference",
         "com.google.android.material_material",
     ],
-
+    libs: [
+        "framework-tethering",
+    ],
     platform_apis: true,
     privileged: true,
     certificate: "platform",

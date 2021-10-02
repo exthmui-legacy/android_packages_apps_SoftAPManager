@@ -3,6 +3,10 @@
     package="org.exthmui.softap"
     android:sharedUserId="android.uid.system">
 
+    <uses-permission android:name="android.permission.NETWORK_SETTINGS" />
+    <uses-permission android:name="android.permission.NETWORK_STACK" />
+    <uses-permission android:name="android.permission.MAINLINE_NETWORK_STACK" />
+
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
